@@ -1,0 +1,58 @@
+/*Bipartite Graph
+* Its vertices can be divided into two disjoint and independent
+  sets U and V such that every edge connects a vertex in U to one in V
+* The graph does not contain any odd-length cycles
+* The graph is 2 colorable
+*/
+
+/*Pseudocode
+* Traverse the graph
+* If the current node is of red color, paint its neighbours as blue
+* If u r able to color the graph successfully, then graph is bipartite
+*/
+
+vector<vi> adj;
+vector<bool> vis;
+vector<int> col;
+bool bipartite;
+void color(int u, int curr) {
+    if (col[u] != -1 and col[u] != curr) {
+        bipartite = false;
+        return;
+    }
+    col[u] = curr;
+    if (vis[u]) return;
+    vis[u] = true;
+    for (auto i : adj[u]) {
+        color(i, curr xor 1);
+    }
+}
+
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    bipartite = true;
+    int n, m; cin >> n >> m;
+    adj = vector<vi>(n);
+    vis = vector<bool>(n, false);
+    col = vi(n, -1);
+    vi components;
+    rep(i, m) {
+        int u, v; cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    rep(i, n) {
+        if (!vis[i]) {
+            color(i, 0);
+        }
+    }
+    if (bipartite) cout << "BIPARTITE";
+    else cout << "NOT BIPARTITE";
+
+    return 0;
+}
