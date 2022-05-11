@@ -1,0 +1,64 @@
+//Connected component: is a subgraph in which any two vertices are connected to each other
+//by paths and which is connected to no additional vertices in the supergraph
+
+/*IDEA:
+* Visit the nodes in a depth first fashion
+* If the node is not visited , visit that node and its neighbour recursively
+* Each time a unvisited node is found, a new component will be found
+*/
+
+int get_comp(int idx,vector<bool> &vis, vector<vi> &adj ) {
+    if (vis[idx]) return 0;
+    vis[idx] = true;
+    int ans = 1;
+    for (auto i : adj[idx]) {
+        if (!vis[i]) {
+            ans += get_comp(i,vis,adj);
+            vis[i] = true;
+        }
+    }
+    return ans;
+}
+
+/* Question: There are N friends numbered (0 to N-1)
+You have to choose 2 persons from different groups and find no. of ways for it
+You are given information in form of M pairs (X,Y) where there is a link
+*/
+
+//Idea: find the components and their sizes.
+// at ith component choose one from it and other from rest of grps
+/*
+long long ans=0;
+for(auto i:components) ans+= i*(n-i);
+cout<<(ans/2);
+*/
+
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+
+    int n, m; cin >> n >> m;
+    vector<vi> adj(n);
+    vi components;
+    rep(i, m) {
+        int u, v; cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    bool cycle = false;
+    vi stack(n, 0);
+    vector<bool> visited(n, 0);
+
+    rep(i, n) {
+        if (!visited[i]) components.pb(get_comp(i));
+    }
+    for (auto i : components) {
+        cout << i << " ";
+    }
+
+    return 0;
+}
