@@ -1,0 +1,46 @@
+/*Floyd Warshall Algorithm (DP based)
+* To find all pair shortest paths,
+* i.e. for every u,v in graph G, finnd shortest path between them
+
+Note: works for all kind of graphs
+*/
+
+/*Idea: Relax the adjacency matrix 'n' times
+* Check if by inclusion of node in the path, if distance reduced
+*  then update the path distance
+*/
+
+const int inf = 1e9;
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    
+    vector<vector<int>> graph = {};// TAKE some graph
+    int n = graph.size();
+    vector<vi> dist = graph;
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (dist[i][k] + dist[k][j] < dist[i][j]) {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                }
+            }
+        }
+    }
+    rep(i, n) {
+        rep(j, n) {
+            if (dist[i][j] = inf) {
+                cout << "inf";
+            }
+            else cout << dist[i][j] << " ";
+        }
+    }
+
+    return 0;
+}
+
+//Time complexity: O(N^3)
