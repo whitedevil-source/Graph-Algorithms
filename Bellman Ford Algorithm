@@ -1,0 +1,48 @@
+/*Bellman Ford Problem
+* From a source vertex find the shortest distance to all other nodes in the graph
+* 
+* IDEA:
+* Initially d[v]=0 and for all other elements d[]=inf
+* In each pass, relax all the edges;
+*   i.e. for edge (a,b) having weight w, d[b]=min(d[b],d[a]+w)
+* Assuming no negative edge cycle, since there are n vertices,
+* shortest path can only contain n-1 edges. Therefore we'll get
+* answer in atmost n-1 passes
+* 
+* Note: It will work for negative edges and negative cycles.
+* It can detect negative cycles as well
+*/ 
+
+//To check negative cycle, check if dist[] of any vertex is updated
+//after n-1 passes. If yes then there is negative cycle in graph.
+
+const int inf = 1e9;
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    
+    int n, m; cin >> n >> m;
+    vector<vector<int>> edges;
+    for (int i = 0; i < m; i++) {
+        int u, v, w; cin >> u >> v >> w;
+        edges.push_back({ v,w });
+    }
+    int src; cin >> src;
+    vi dist(n, inf);
+    dist[src] = 0;
+    for (int iter = 0; iter < n - 1; iter++) {
+        for (auto e : edges) {
+            int u = e[0];
+            int v = e[1];
+            int w = e[2];
+            dist[v] = min(dist[v], w + dist[u]);
+        }
+    }
+    for (auto i : dist) cout << i << " ";
+
+    return 0;
+}
