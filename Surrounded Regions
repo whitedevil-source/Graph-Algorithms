@@ -1,0 +1,71 @@
+/* Surrounded Regions:
+* Given a 2D board containing 'X' and 'O', capture all
+* regions surrounded by 'X'
+* A region is captured by flipping all 'O's into 'X's in
+* that surrounded region
+*/
+/*IDEA:
+* Traverse the 'O' components around the edges of the grid
+  and change it to '*'
+* The remaining 'O' components will be surrounded regions
+  that can be captured.
+* Change the '*' back to 'O'
+*/
+
+
+void change(vector<vector<char>>& A, int x, int y) {
+    A[x][y] = '*';
+    int dx[] = { 0,0,-1,1 };
+    int dy[] = { 1,-1,0,0 };
+    rep(i, 4) {
+        int cx = x + dx[i];
+        int cy = y + dy[i];
+        if (cx >= 0 && cx < A.size() && cy >= 0 && cy < A[0].size() && A[cx][cy] == 'O') {
+            change(A, cx, cy);
+        }
+    }
+}
+const int inf = 1e9;
+#define FIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define test ll t; cin>>t; while(t--)
+int main()
+{
+    ios::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    // freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    
+    int n, m; cin >> n >> m;
+    vector<vector<char>> A(n, vector<char>(m));
+    rep(i, n) {
+        rep(j, m) {
+            cin >> A[i][j];
+        }
+    }
+    rep(i, n) {
+        rep(j, m) {
+            if (i == 0 || i == n - 1 || j == 0 || j == m - 1) {
+                if(A[i][j]=='O') change(A, i, j); //*convert
+            }
+        }
+    }
+    rep(i, n) {
+        rep(j, m) {
+            if (A[i][j] == 'O') {
+                A[i][j] = 'X';
+            }
+        }
+    }
+    rep(i, n) {
+        rep(j, m) {
+            if (A[i][j] == '*') A[i][j] = 'O';
+        }
+    }
+    rep(i, n) {
+        rep(j, m) {
+            cout << A[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
